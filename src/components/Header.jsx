@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as SearchIcon } from '../images/searchIcon.svg';
 import { ReactComponent as ProfileIcon } from '../images/profileIcon.svg';
-import SearchBar from '../components/SearchBar';
+import SearchBar from './SearchBar';
 
 function Header({ title }) {
   const history = useHistory();
