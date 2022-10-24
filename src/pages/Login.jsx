@@ -26,7 +26,7 @@ function Login(props) {
 
   const buttonHandler = (e) => {
     e.preventDefault();
-    user = { email };
+    const user = { email };
     localStorage.setItem('user', JSON.stringify(user));
     const { history } = props;
     history.push('/meals');
