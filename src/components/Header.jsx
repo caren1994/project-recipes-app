@@ -8,6 +8,7 @@ import SearchBar from './SearchBar';
 function Header({ title }) {
   const history = useHistory();
   const [showInput, setShowInput] = useState(false);
+
   const renderSearchIcon = () => history.location.pathname !== '/profile'
     && history.location.pathname !== '/done-recipes'
     && history.location.pathname !== '/favorite-recipes';
