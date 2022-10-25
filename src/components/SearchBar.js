@@ -21,7 +21,7 @@ function SearchBar({ pathname, history }) {
     }
   });
 
-  const handleClick = async () => {
+  const handleClick = () => {
     const searchParameter = {
       pathname,
       searchOption: radios,

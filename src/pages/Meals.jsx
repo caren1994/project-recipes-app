@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Header from '../components/Header';
-import RecipeCard from '../components/RecipeCard';
+import RecipeCard from '../components/Recipes';
 import AppContext from '../context/AppContext';
 
 function Meals() {
