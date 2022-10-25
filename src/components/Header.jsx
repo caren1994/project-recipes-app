@@ -34,7 +34,10 @@ function Header({ title }) {
           />
         </button>
       )}
-      {showInput && <SearchBar />}
+      {showInput && <SearchBar
+        pathname={ history.location.pathname }
+        history={ history }
+      />}
     </section>
   );
 }
