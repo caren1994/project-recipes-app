@@ -1,10 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function SearchBar() {
-  const { radios, setRadios, search, setSearch, handleClick,
+  const [radios, setRadios] = useState('Ingredient');
+  const [search, setSearch] = useState('');
+  const { getData } = useContext(AppContext);
+  const handleChangeRadio = ({ target }) => {
+    setRadios(target.value);
+  };
 
-  } = useContext(AppContext);
+  const handleClick = async () => {
+    console.log('foi');
+    if (radios === 'Ingredient') {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`);
+      const { meals } = await response.json();
+      console.log(meals);
+      getData(meals);
+    }
+    if (radios === 'Name') {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`);
+      const { meals } = await response.json();
+      console.log(meals);
+      getData(meals);
+    }
+    if (radios === 'First letter') {
+      if (search.length !== 1) {
+        global.alert('Your search must have only 1 (one) character');
+      } else {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`);
+        const { meals } = await response.json();
+        console.log(meals);
+        getData(meals);
+      }
+    }
+  };
 
   return (
     <section>
@@ -22,9 +51,10 @@ function SearchBar() {
         Ingredient
         <input
           type="radio"
-          value={ radios }
+          value="Ingredient"
+          id="ingredient-search"
           name="radios"
-          onChange={ ({ target }) => setRadios(target.value) }
+          onChange={ handleChangeRadio }
           data-testid="ingredient-search-radio"
         />
       </label>
@@ -32,9 +62,10 @@ function SearchBar() {
         Name
         <input
           type="radio"
-          value={ radios }
+          value="Name"
+          id="name-search"
           name="radios"
-          onChange={ ({ target }) => setRadios(target.value) }
+          onChange={ handleChangeRadio }
           data-testid="name-search-radio"
         />
       </label>
@@ -42,9 +73,10 @@ function SearchBar() {
         First letter
         <input
           type="radio"
-          value={ radios }
+          value="First letter"
+          id="first-letter-search"
           name="radios"
-          onChange={ ({ target }) => setRadios(target.value) }
+          onChange={ handleChangeRadio }
           data-testid="first-letter-search-radio"
         />
       </label>
@@ -56,7 +88,7 @@ function SearchBar() {
         Search
 
       </button>
-      <p>{data}</p>
+
     </section>
   );
 }
