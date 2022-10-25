@@ -7,6 +7,7 @@ function Drinks() {
   const { data } = useContext(AppContext);
   const MAX_SIZE = 12;
   const renderData = data.length > MAX_SIZE ? data.slice(0, MAX_SIZE) : data;
+
   return (
     <div>
       <Header title="Drinks" />
