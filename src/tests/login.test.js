@@ -26,6 +26,7 @@ describe('Login screen tests', () => {
 
     const textButtonEnter = screen.getByText(/Enter/i);
     expect(textButtonEnter).toBeInTheDocument();
+    expect(textButtonEnter).toBeDisabled();
   });
 
   it('Checks if the Enter button can be clicked', () => {
@@ -33,7 +34,6 @@ describe('Login screen tests', () => {
 
     const buttonEnter = screen.getByTestId('login-submit-btn');
     expect(buttonEnter).toBeInTheDocument();
-
     userEvent.click(buttonEnter);
   });
 
@@ -46,6 +46,8 @@ describe('Login screen tests', () => {
 
     userEvent.type(inputEmail, 'grupo7@grupo7.com');
     userEvent.type(inputPassword, '1234567');
+    const textButtonEnter = screen.getByText(/Enter/i);
+    expect(textButtonEnter).not.toBeDisabled();
     userEvent.click(buttonEnter);
 
     const { pathname } = history.location;
