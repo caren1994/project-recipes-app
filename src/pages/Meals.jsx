@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import RecipeCard from '../components/Recipes';
 import AppContext from '../context/AppContext';
@@ -17,6 +18,7 @@ function Meals() {
           name={ meal.strMeal }
           src={ meal.strMealThumb }
         />))}
+      <Footer />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import AppContext from '../context/AppContext';
 import RecipeCard from '../components/Recipes';
@@ -18,6 +19,7 @@ function Drinks() {
           name={ drink.strDrink }
           src={ drink.strDrinkThumb }
         />))}
+      <Footer />
     </div>
   );
 }
