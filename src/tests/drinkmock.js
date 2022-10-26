@@ -176,7 +176,7 @@ export const drinkNameCubaLibre = {
       strDrinkAlternate: null,
       strTags: 'IBA,ContemporaryClassic',
       strVideo: null,
-      strCategory,
+      strCategory: ordinaryDrink,
       strIBA: 'Contemporary Classics',
       strAlcoholic: 'Alcoholic',
       strGlass: highballGlass,
