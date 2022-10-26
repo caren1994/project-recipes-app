@@ -9,14 +9,23 @@ const CATEGORY_QTD = 5;
 function Meals() {
   const { data, getData } = useContext(AppContext);
   const [categories, setCategories] = useState([]);
+  const [filter, setFilter] = useState([]);
+
+  async function getInitialData() {
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    const { meals } = await response.json();
+    getData(meals);
+  }
 
   useEffect(() => {
-    async function getInitialData() {
-      const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-      const { meals } = await response.json();
-      getData(meals);
-    }
     getInitialData();
+    console.log('ooooooi');
+  }, []);
+
+  useEffect(() => {
+    // if (filter.length === 0) {
+    //   getInitialData();
+    // }
 
     async function getCategories() {
       const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
@@ -24,10 +33,22 @@ function Meals() {
       setCategories(meals.slice(0, CATEGORY_QTD));
     }
     getCategories();
-  }, [getData]);
+  }, [getData, filter, data]);
 
   const MAX_SIZE = 12;
   const renderData = data.length > MAX_SIZE ? data.slice(0, MAX_SIZE) : data;
+
+  const handleClickFilter = async (category) => {
+    if (filter.length > 0 && filter[0] === category) {
+      setFilter([]);
+      getInitialData();
+    } else {
+      setFilter([category]);
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+      const { meals } = await response.json();
+      getData(meals);
+    }
+  };
 
   return (
     <div>
@@ -38,10 +59,18 @@ function Meals() {
             data-testid={ `${category.strCategory}-category-filter` }
             type="button"
             key={ category.strCategory }
+            onClick={ () => handleClickFilter(category.strCategory) }
           >
             {category.strCategory}
           </button>))}
-      {data.length > 1 && renderData
+      <button
+        type="button"
+        data-testid="All-category-filter"
+        onClick={ () => setFilter([]) }
+      >
+        All
+      </button>
+      {/* data.length > 1 && */ renderData
         .map((meal, index) => (<RecipeCard
           index={ index }
           key={ meal.idMeal }

@@ -6,6 +6,7 @@ function SearchBar({ pathname, history }) {
   const [radios, setRadios] = useState('Ingredient');
   const [search, setSearch] = useState('');
   const { getSearchSetup, data } = useContext(AppContext);
+
   const handleChangeRadio = ({ target }) => {
     setRadios(target.value);
   };
