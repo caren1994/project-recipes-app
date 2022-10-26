@@ -74,6 +74,7 @@ function Meals() {
         .map((meal, index) => (<RecipeCard
           index={ index }
           key={ meal.idMeal }
+          id={ meal.idMeal }
           name={ meal.strMeal }
           src={ meal.strMealThumb }
         />))}
