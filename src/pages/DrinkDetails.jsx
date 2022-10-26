@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import RecipeDetails from '../components/RecipeDetails';
 
 function DrinksDetails({ match: { params: { id } } }) {
+  useEffect(() => {
+    async function getRecipeById() {
+      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+      const { drinks } = await response.json();
+      console.log(drinks);
+    }
+    getRecipeById();
+  }, [id]);
+
   return (
     <div>
-      {`Drinks Details: ${id}`}
+      <h1>{id}</h1>
+      <RecipeDetails />
     </div>
   );
 }
