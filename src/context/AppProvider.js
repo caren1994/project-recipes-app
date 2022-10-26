@@ -68,6 +68,10 @@ function AppProvider({ children }) {
     }
   }, []);
 
+  const getData = useCallback(async (initialData) => {
+    setData(initialData);
+  }, []);
+
   useEffect(() => {
     if (searchSetup.pathname === '/meals') {
       getMealAPIResult(searchSetup);
@@ -80,8 +84,9 @@ function AppProvider({ children }) {
   const context = useMemo(() => ({
     data,
     getSearchSetup,
+    getData,
 
-  }), [data]);
+  }), [data, getData]);
 
   return (
     <AppContext.Provider value={ context }>

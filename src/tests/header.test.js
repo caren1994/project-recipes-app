@@ -1,15 +1,20 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import renderWithRouter from './renderWithRouter';
 import App from '../App';
+import AppProvider from '../context/AppProvider';
 import Meals from '../components/Header';
-import Drinks from '../pages/Drinks';
 import Profile from '../pages/Profile';
 
 describe('Header component tests', () => {
   it('Checks if the route changes to the "/profile" profile screen', () => {
-    const { history } = renderWithRouter(<App />);
+    const { history } = renderWithRouter(
+      <AppProvider>
+        <App />
+      </AppProvider>,
+    );
 
     userEvent.type(screen.getByTestId('email-input'), 'grupo7@grupo7.com');
     userEvent.type(screen.getByTestId('password-input'), '1234567');
@@ -33,7 +38,15 @@ describe('Header component tests', () => {
   });
 
   it('Checks in \'/drinks\' if two icon buttons and title are rendered', () => {
-    renderWithRouter(<Drinks />);
+    const { history } = renderWithRouter(
+      <AppProvider>
+        <App />
+      </AppProvider>,
+    );
+
+    act(() => {
+      history.push('/drinks');
+    });
 
     const searchIcon = screen.getByRole('img', {
       name: /search icon/i,
@@ -56,7 +69,7 @@ describe('Header component tests', () => {
     // have to test if searchbutton is not.
   });
 
-  it('', () => {
+  it('Tests profile icon click ', () => {
     const { history } = renderWithRouter(<Meals />);
 
     userEvent.click(screen.getByRole('img', {
@@ -67,7 +80,11 @@ describe('Header component tests', () => {
   });
 
   it('Checks for search inputs when search icon is clicked', () => {
-    renderWithRouter(<App />);
+    renderWithRouter(
+      <AppProvider>
+        <App />
+      </AppProvider>,
+    );
 
     userEvent.type(screen.getByTestId('email-input'), 'grupo7@grupo7.com');
     userEvent.type(screen.getByTestId('password-input'), '1234567');
