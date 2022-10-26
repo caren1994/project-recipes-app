@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import RecipeCard from '../components/Recipes';
@@ -11,29 +11,24 @@ function Meals() {
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState([]);
 
-  async function getInitialData() {
+  const getInitialData = useCallback(async () => {
     const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
     const { meals } = await response.json();
     getData(meals);
-  }
+  }, [getData]);
 
   useEffect(() => {
     getInitialData();
-    console.log('ooooooi');
-  }, []);
+  }, [getInitialData]);
 
   useEffect(() => {
-    // if (filter.length === 0) {
-    //   getInitialData();
-    // }
-
     async function getCategories() {
       const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
       const { meals } = await response.json();
       setCategories(meals.slice(0, CATEGORY_QTD));
     }
     getCategories();
-  }, [getData, filter, data]);
+  }, [filter, data]);
 
   const MAX_SIZE = 12;
   const renderData = data.length > MAX_SIZE ? data.slice(0, MAX_SIZE) : data;
@@ -48,6 +43,11 @@ function Meals() {
       const { meals } = await response.json();
       getData(meals);
     }
+  };
+
+  const handleClickAll = () => {
+    setFilter([]);
+    getInitialData();
   };
 
   return (
@@ -66,7 +66,7 @@ function Meals() {
       <button
         type="button"
         data-testid="All-category-filter"
-        onClick={ () => setFilter([]) }
+        onClick={ handleClickAll }
       >
         All
       </button>

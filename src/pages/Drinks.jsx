@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import AppContext from '../context/AppContext';
@@ -11,24 +11,24 @@ function Drinks() {
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState([]);
 
+  const getInitialData = useCallback(async () => {
+    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    const { drinks } = await response.json();
+    getData(drinks);
+  }, [getData]);
+
   useEffect(() => {
-    async function getInitialData() {
-      const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
-      const { drinks } = await response.json();
-      getData(drinks);
-    }
+    getInitialData();
+  }, [getInitialData]);
 
-    if (filter.length === 0) {
-      getInitialData();
-    }
-
+  useEffect(() => {
     async function getCategories() {
       const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
       const { drinks } = await response.json();
       setCategories(drinks.slice(0, CATEGORY_QTD));
     }
     getCategories();
-  }, [getData, filter]);
+  }, []);
 
   const MAX_SIZE = 12;
   const renderData = data.length > MAX_SIZE ? data.slice(0, MAX_SIZE) : data;
@@ -36,12 +36,18 @@ function Drinks() {
   const handleClickFilter = async (category) => {
     if (filter.length > 0 && filter[0] === category) {
       setFilter([]);
+      getInitialData();
     } else {
       setFilter([category]);
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
       const { drinks } = await response.json();
       getData(drinks);
     }
+  };
+
+  const handleClickAll = () => {
+    setFilter([]);
+    getInitialData();
   };
 
   return (
@@ -60,7 +66,7 @@ function Drinks() {
       <button
         type="button"
         data-testid="All-category-filter"
-        onClick={ () => setFilter([]) }
+        onClick={ handleClickAll }
       >
         All
       </button>
