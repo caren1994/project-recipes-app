@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from './renderWithRouter';
 import App from '../App';
+import AppProvider from '../context/AppProvider';
 
 describe('Login screen tests', () => {
   it('Checks if the email input appears on the screen and if it is possible to type in it', () => {
@@ -38,7 +39,11 @@ describe('Login screen tests', () => {
   });
 
   it('If clicking on the button redirects to /meals', () => {
-    const { history } = renderWithRouter(<App />);
+    const { history } = renderWithRouter(
+      <AppProvider>
+        <App />
+      </AppProvider>,
+    );
 
     const inputEmail = screen.getByTestId('email-input');
     const inputPassword = screen.getByTestId('password-input');
@@ -46,8 +51,7 @@ describe('Login screen tests', () => {
 
     userEvent.type(inputEmail, 'grupo7@grupo7.com');
     userEvent.type(inputPassword, '1234567');
-    const textButtonEnter = screen.getByText(/Enter/i);
-    expect(textButtonEnter).not.toBeDisabled();
+    expect(buttonEnter).not.toBeDisabled();
     userEvent.click(buttonEnter);
 
     const { pathname } = history.location;

@@ -1,38 +1,33 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import AppContext from '../context/AppContext';
 
-function SearchBar() {
+function SearchBar({ pathname, history }) {
   const [radios, setRadios] = useState('Ingredient');
   const [search, setSearch] = useState('');
-  const { getData } = useContext(AppContext);
+  const { getSearchSetup, data } = useContext(AppContext);
   const handleChangeRadio = ({ target }) => {
     setRadios(target.value);
   };
 
-  const handleClick = async () => {
-    console.log('foi');
-    if (radios === 'Ingredient') {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`);
-      const { meals } = await response.json();
-      console.log(meals);
-      getData(meals);
-    }
-    if (radios === 'Name') {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`);
-      const { meals } = await response.json();
-      console.log(meals);
-      getData(meals);
-    }
-    if (radios === 'First letter') {
-      if (search.length !== 1) {
-        global.alert('Your search must have only 1 (one) character');
-      } else {
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`);
-        const { meals } = await response.json();
-        console.log(meals);
-        getData(meals);
+  useEffect(() => {
+    if (data.length === 1) {
+      if (pathname === '/meals') {
+        history.push(`meals/${data[0].idMeal}`);
+      }
+      if (pathname === '/drinks') {
+        history.push(`drinks/${data[0].idDrink}`);
       }
     }
+  });
+
+  const handleClick = () => {
+    const searchParameter = {
+      pathname,
+      searchOption: radios,
+      searchInput: search,
+    };
+    getSearchSetup(searchParameter);
   };
 
   return (
@@ -92,5 +87,12 @@ function SearchBar() {
     </section>
   );
 }
+
+SearchBar.propTypes = {
+  pathname: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default SearchBar;
