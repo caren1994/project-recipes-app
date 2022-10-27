@@ -74,6 +74,7 @@ function Drinks() {
         .map((drink, index) => (<RecipeCard
           index={ index }
           key={ drink.idDrink }
+          id={ drink.idDrink }
           name={ drink.strDrink }
           src={ drink.strDrinkThumb }
         />))}
