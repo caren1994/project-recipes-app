@@ -91,12 +91,12 @@ function DrinksDetails({ match: { params: { id } } }) {
               data-testid={ `${index}-recommendation-card` }
             >
               <h3 data-testid={ `${index}-recommendation-title` }>{e.strMeal}</h3>
-              <img src={ e.strMealThumb } alt={ e.strMeal } />
+              <img src={ e.strMealThumb } alt={ e.strMeal } width="250px" />
             </div>))}
 
       </div>
-
-      {renderBtn
+      <div>
+        {renderBtn
       && (
         <button
           className="fixed"
@@ -107,6 +107,23 @@ function DrinksDetails({ match: { params: { id } } }) {
           {renderContinue ? 'Continue Recipe' : 'Start Recipe'}
         </button>
       )}
+        <button
+          className="btns"
+          type="button"
+          data-testid="share-btn"
+        >
+          Share
+
+        </button>
+        <button
+          className="btns"
+          type="button"
+          data-testid="favorite-btn"
+        >
+          Favorite
+
+        </button>
+      </div>
     </div>
   );
 }

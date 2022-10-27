@@ -1,6 +1,8 @@
 .carousel{
 display:flex;
 overflow-x: scroll;
+/* height: 350px;
+width:500px ; */
 }
 .carouselItem{
 width: 51%;
@@ -8,4 +10,10 @@ width: 51%;
 .fixed{
   bottom: 0;
   position: fixed;
+}
+
+.btns {
+
+margin: 50px 0px;
+
 }
