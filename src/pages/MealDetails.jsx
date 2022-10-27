@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
+import ShareIcon from '../images/shareIcon.svg';
 
 const RECOMENDATION_NUMBER = 6;
 
@@ -13,6 +15,7 @@ function MealsDetails({ match: { params: { id } } }) {
   const [recomendationDrink, setRecomendationDrink] = useState([]);
   const [renderBtn, setRenderBtn] = useState(false);
   const [renderContinue, setRenderContinue] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   const history = useHistory();
 
@@ -69,6 +72,11 @@ function MealsDetails({ match: { params: { id } } }) {
     }
   };
 
+  const handleShareBtn = () => {
+    copy(`http://localhost:3000${history.location.pathname}`);
+    setIsCopied(true);
+  };
+
   return (
     <div>
       <RecipeDetails
@@ -93,7 +101,7 @@ function MealsDetails({ match: { params: { id } } }) {
               <img src={ e.strDrinkThumb } alt={ e.strDrink } width="250px" />
             </div>))}
       </div>
-      <div className="fixed-buttons">
+      <div>
         {renderBtn
       && (
         <button
@@ -105,8 +113,23 @@ function MealsDetails({ match: { params: { id } } }) {
           {renderContinue ? 'Continue Recipe' : 'Start Recipe'}
         </button>
       )}
-        <button type="button" data-testid="share-btn">Share</button>
-        <button type="button" data-testid="favorite-btn">Favorite</button>
+        {isCopied && <p>Link copied!</p>}
+        <button
+          type="button"
+          onClick={ handleShareBtn }
+          className="btns"
+          data-testid="share-btn"
+        >
+          <img src={ ShareIcon } alt="share button" />
+        </button>
+        <button
+          type="button"
+          className="btns"
+          data-testid="favorite-btn"
+        >
+          Favorite
+
+        </button>
       </div>
     </div>
   );

@@ -91,7 +91,6 @@ function AppProvider({ children }) {
     data,
     getSearchSetup,
     getData,
-
   }), [data, getData]);
 
   return (
