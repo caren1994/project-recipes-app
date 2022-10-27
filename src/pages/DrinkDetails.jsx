@@ -10,6 +10,8 @@ function DrinksDetails({ match: { params: { id } } }) {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [recomendationFood, setRecomendationFood] = useState([]);
+  const [renderBtn, setRenderBtn] = useState(false);
+  const [renderContinue, setRenderContinue] = useState(false);
 
   function getIngredients(item) {
     const recipeEntries = Object.entries(item);
@@ -50,6 +52,15 @@ function DrinksDetails({ match: { params: { id } } }) {
     getRecomendationFood();
   }, []);
 
+  useEffect(() => {
+    const doneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const result = !doneRecipe.some((item) => item.id === id);
+    setRenderBtn(result);
+    const inProgressRecipe = JSON
+      .parse(localStorage.getItem('inProgressRecipes')) || { drinks: {}, meals: {} };
+    setRenderContinue(inProgressRecipe.drinks[id] || null);
+  }, [id]);
+
   return (
     <div>
       <h1>{id}</h1>
@@ -75,13 +86,17 @@ function DrinksDetails({ match: { params: { id } } }) {
             </div>))}
 
       </div>
-      <button
-        className="fixed"
-        type="button"
-        data-testid="start-recipe-btn"
-      >
-        Start Recipe
-      </button>
+
+      {renderBtn
+      && (
+        <button
+          className="fixed"
+          type="button"
+          data-testid="start-recipe-btn"
+        >
+          {renderContinue ? 'Continue Recipe' : 'Start Recipe'}
+        </button>
+      )}
     </div>
   );
 }

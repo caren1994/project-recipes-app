@@ -10,6 +10,8 @@ function MealsDetails({ match: { params: { id } } }) {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [recomendationDrink, setRecomendationDrink] = useState([]);
+  const [renderBtn, setRenderBtn] = useState(false);
+  const [renderContinue, setRenderContinue] = useState(false);
 
   function getIngredients(item) {
     const recipeEntries = Object.entries(item);
@@ -49,6 +51,15 @@ function MealsDetails({ match: { params: { id } } }) {
     getRecomendationDrink();
   }, []);
 
+  useEffect(() => {
+    const doneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const result = !doneRecipe.some((item) => item.id === id);
+    setRenderBtn(result);
+    const inProgressRecipe = JSON
+      .parse(localStorage.getItem('inProgressRecipes')) || { drinks: {}, meals: {} };
+    setRenderContinue(inProgressRecipe.meals[id] || null);
+  }, [id]);
+
   return (
     <div>
       <RecipeDetails
@@ -73,14 +84,16 @@ function MealsDetails({ match: { params: { id } } }) {
               <img src={ e.strDrinkThumb } alt={ e.strDrink } />
             </div>))}
       </div>
-      <button
-        className="fixed"
-        type="button"
-        data-testid="start-recipe-btn"
-      >
-        Start Recipe
-      </button>
-
+      {renderBtn
+      && (
+        <button
+          className="fixed"
+          type="button"
+          data-testid="start-recipe-btn"
+        >
+          {renderContinue ? 'Continue Recipe' : 'Start Recipe'}
+        </button>
+      )}
     </div>
   );
 }
