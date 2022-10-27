@@ -75,6 +75,13 @@ function DrinksDetails({ match: { params: { id } } }) {
             </div>))}
 
       </div>
+      <button
+        className="fixed"
+        type="button"
+        data-testid="start-recipe-btn"
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }

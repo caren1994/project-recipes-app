@@ -73,6 +73,13 @@ function MealsDetails({ match: { params: { id } } }) {
               <img src={ e.strDrinkThumb } alt={ e.strDrink } />
             </div>))}
       </div>
+      <button
+        className="fixed"
+        type="button"
+        data-testid="start-recipe-btn"
+      >
+        Start Recipe
+      </button>
 
     </div>
   );

@@ -5,3 +5,7 @@ overflow-x: scroll;
 .carouselItem{
 width: 51%;
 }
+.fixed{
+  bottom: 0;
+  position: fixed;
+}
