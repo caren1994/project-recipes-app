@@ -1,6 +1,7 @@
 // import PropTypes from 'prop-types';
 import PropTypes from 'prop-types';
 import React from 'react';
+import '../css/App.css';
 
 function RecipeDetails({
   src, name, category, ingredients,
