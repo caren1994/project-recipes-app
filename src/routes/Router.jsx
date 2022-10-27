@@ -8,6 +8,8 @@ import FavoriteRecipes from '../pages/FavoriteRecipes';
 import Drinks from '../pages/Drinks';
 import MealsDetails from '../pages/MealDetails';
 import DrinksDetails from '../pages/DrinkDetails';
+import MealsInProgress from '../pages/MealsInProgress';
+import DrinksInProgress from '../pages/DrinksInProgress';
 
 function Router() {
   return (
@@ -16,6 +18,8 @@ function Router() {
       <Route exact path="/profile" component={ Profile } />
       <Route exact path="/meals" component={ Meals } />
       <Route exact path="/meals/:id" component={ MealsDetails } />
+      <Route exact path="/meals/:id/in-progress" component={ MealsInProgress } />
+      <Route exact path="/drinks/:id/in-progress" component={ DrinksInProgress } />
       <Route exact path="/drinks" component={ Drinks } />
       <Route exact path="/drinks/:id" component={ DrinksDetails } />
       <Route exact path="/done-recipes" component={ DoneRecipes } />

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
 
@@ -12,6 +13,8 @@ function DrinksDetails({ match: { params: { id } } }) {
   const [recomendationFood, setRecomendationFood] = useState([]);
   const [renderBtn, setRenderBtn] = useState(false);
   const [renderContinue, setRenderContinue] = useState(false);
+
+  const history = useHistory();
 
   function getIngredients(item) {
     const recipeEntries = Object.entries(item);
@@ -61,6 +64,12 @@ function DrinksDetails({ match: { params: { id } } }) {
     setRenderContinue(inProgressRecipe.drinks[id] || null);
   }, [id]);
 
+  const handleClick = () => {
+    if (!renderContinue) {
+      history.push(`/drinks/${id}/in-progress`);
+    }
+  };
+
   return (
     <div>
       <h1>{id}</h1>
@@ -93,6 +102,7 @@ function DrinksDetails({ match: { params: { id } } }) {
           className="fixed"
           type="button"
           data-testid="start-recipe-btn"
+          onClick={ handleClick }
         >
           {renderContinue ? 'Continue Recipe' : 'Start Recipe'}
         </button>
