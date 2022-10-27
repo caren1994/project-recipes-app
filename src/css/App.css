@@ -1,0 +1,7 @@
+.carousel{
+display:flex;
+overflow-x: scroll;
+}
+.carouselItem{
+width: 51%;
+}

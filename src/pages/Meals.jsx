@@ -28,7 +28,7 @@ function Meals() {
       setCategories(meals.slice(0, CATEGORY_QTD));
     }
     getCategories();
-  }, [filter, data]);
+  }, []);
 
   const MAX_SIZE = 12;
   const renderData = data.length > MAX_SIZE ? data.slice(0, MAX_SIZE) : data;
