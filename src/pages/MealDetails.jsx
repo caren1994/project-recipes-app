@@ -16,6 +16,7 @@ function MealsDetails({ match: { params: { id } } }) {
   const [renderBtn, setRenderBtn] = useState(false);
   const [renderContinue, setRenderContinue] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
   const history = useHistory();
 
@@ -26,6 +27,8 @@ function MealsDetails({ match: { params: { id } } }) {
       setRecipe(meals[0]);
     }
     getRecipeById();
+
+    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')));
   }, [id]);
 
   function getIngredients(item) {
@@ -83,6 +86,19 @@ function MealsDetails({ match: { params: { id } } }) {
     setIsCopied(true);
   };
 
+  const handleFavoriteBtn = () => {
+    const newFavorites = [...favorites, [{
+      id: recipe.idMeal,
+      type: 'meal',
+      nationality: 'a',
+      category: recipe.strCategory,
+      alcoholicOrNot: 'hm',
+      name: recipe.strMeal,
+      image: recipe.strMealThumb }]];
+
+    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+  };
+
   return (
     <div>
       <RecipeDetails
@@ -132,6 +148,7 @@ function MealsDetails({ match: { params: { id } } }) {
           type="button"
           className="btns"
           data-testid="favorite-btn"
+          onClick={ handleFavoriteBtn }
         >
           Favorite
 

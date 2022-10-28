@@ -16,6 +16,7 @@ function DrinksDetails({ match: { params: { id } } }) {
   const [renderBtn, setRenderBtn] = useState(false);
   const [renderContinue, setRenderContinue] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [favorites, setFavorites] = useState([]);
 
   const history = useHistory();
 
@@ -42,6 +43,7 @@ function DrinksDetails({ match: { params: { id } } }) {
       setRecipe(drinks[0]);
     }
     getRecipeById();
+    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')));
   }, [id]);
 
   useEffect(() => {
@@ -81,6 +83,19 @@ function DrinksDetails({ match: { params: { id } } }) {
   const handleShareBtn = () => {
     copy(`http://localhost:3000${history.location.pathname}`);
     setIsCopied(true);
+  };
+
+  const handleFavoriteBtn = () => {
+    const newFavorites = [...favorites, {
+      id: recipe.idDrink,
+      type: 'drink',
+      nationality: 'a',
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.strAlcoholic,
+      name: recipe.strDrink,
+      image: recipe.strDrinkThumb }];
+
+    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
   };
 
   return (
@@ -133,6 +148,7 @@ function DrinksDetails({ match: { params: { id } } }) {
           className="btns"
           type="button"
           data-testid="favorite-btn"
+          onClick={ handleFavoriteBtn }
         >
           Favorite
 
