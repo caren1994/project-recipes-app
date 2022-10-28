@@ -63,8 +63,13 @@ function DrinksDetails({ match: { params: { id } } }) {
     const result = !doneRecipe.some((item) => item.id === id);
     setRenderBtn(result);
     const inProgressRecipe = JSON
-      .parse(localStorage.getItem('inProgressRecipes')) || { drinks: {}, meals: {} };
-    setRenderContinue(inProgressRecipe.drinks[id] || null);
+      .parse(localStorage.getItem('inProgressRecipes'));
+
+    if (!Object.keys(inProgressRecipe).includes('drinks')) {
+      setRenderContinue(null);
+    } else {
+      setRenderContinue(inProgressRecipe.drinks[id]);
+    }
   }, [id]);
 
   const handleClick = () => {

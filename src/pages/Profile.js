@@ -21,6 +21,9 @@ function Profile() {
 
   const handleLogout = () => {
     localStorage.clear();
+    // localStorage.setItem('doneRecipes', JSON.stringify([]));
+    // localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    // localStorage.setItem('inProgressRecipes', JSON.stringify({}));
     history.push('/');
   };
 
