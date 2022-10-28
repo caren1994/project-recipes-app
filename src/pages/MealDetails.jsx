@@ -28,7 +28,7 @@ function MealsDetails({ match: { params: { id } } }) {
     }
     getRecipeById();
 
-    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')));
+    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')) || []);
   }, [id]);
 
   function getIngredients(item) {
@@ -87,14 +87,14 @@ function MealsDetails({ match: { params: { id } } }) {
   };
 
   const handleFavoriteBtn = () => {
-    const newFavorites = [...favorites, [{
+    const newFavorites = [...favorites, {
       id: recipe.idMeal,
       type: 'meal',
-      nationality: 'a',
+      nationality: recipe.strArea,
       category: recipe.strCategory,
-      alcoholicOrNot: 'hm',
+      alcoholicOrNot: '',
       name: recipe.strMeal,
-      image: recipe.strMealThumb }]];
+      image: recipe.strMealThumb }];
 
     localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
   };

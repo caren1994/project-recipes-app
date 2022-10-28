@@ -43,7 +43,7 @@ function DrinksDetails({ match: { params: { id } } }) {
       setRecipe(drinks[0]);
     }
     getRecipeById();
-    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')));
+    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')) || []);
   }, [id]);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ function DrinksDetails({ match: { params: { id } } }) {
     const newFavorites = [...favorites, {
       id: recipe.idDrink,
       type: 'drink',
-      nationality: 'a',
+      nationality: '',
       category: recipe.strCategory,
       alcoholicOrNot: recipe.strAlcoholic,
       name: recipe.strDrink,
