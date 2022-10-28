@@ -5,6 +5,8 @@ import copy from 'clipboard-copy';
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
 import ShareIcon from '../images/shareIcon.svg';
+import WhiteHeartIcon from '../images/whiteHeartIcon.svg';
+import BlackHeartIcon from '../images/blackHeartIcon.svg';
 
 const RECOMENDATION_NUMBER = 6;
 
@@ -17,6 +19,7 @@ function MealsDetails({ match: { params: { id } } }) {
   const [renderContinue, setRenderContinue] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isFavorite, setIsfavorite] = useState(false);
 
   const history = useHistory();
 
@@ -27,8 +30,10 @@ function MealsDetails({ match: { params: { id } } }) {
       setRecipe(meals[0]);
     }
     getRecipeById();
-
-    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')) || []);
+    const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    setFavorites(localFavorites);
+    setIsfavorite(localFavorites.some((item) => item.idMeal === id));
+    console.log(localFavorites);
   }, [id]);
 
   function getIngredients(item) {
@@ -95,9 +100,16 @@ function MealsDetails({ match: { params: { id } } }) {
       alcoholicOrNot: '',
       name: recipe.strMeal,
       image: recipe.strMealThumb }];
-
+    setFavorites(newFavorites);
     localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+    setIsfavorite(true);
   };
+
+  // useEffect(() => {
+  //   const isMealFavorite = ;
+  //   console.log(isMealFavorite);
+  //   ;
+  // }, [favorites, id]);
 
   return (
     <div>
@@ -150,8 +162,13 @@ function MealsDetails({ match: { params: { id } } }) {
           data-testid="favorite-btn"
           onClick={ handleFavoriteBtn }
         >
-          Favorite
-
+          {isFavorite
+            ? (
+              <img src={ BlackHeartIcon } alt="favorite heart" />
+            )
+            : (
+              <img src={ WhiteHeartIcon } alt="not favorite heart" />
+            ) }
         </button>
       </div>
     </div>
