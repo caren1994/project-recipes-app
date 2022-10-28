@@ -8,7 +8,7 @@ import favRecipes from '../images/whiteHeartIcon.svg';
 import logoutIcon from '../images/blackHeartIcon.svg';
 
 function Profile() {
-  const email = JSON.parse(localStorage.getItem('user'));
+  const email = JSON.parse(localStorage.getItem('user')) || {};
   const history = useHistory();
 
   const handleFavRecipes = () => {
