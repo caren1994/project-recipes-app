@@ -8,7 +8,7 @@ import favRecipes from '../images/whiteHeartIcon.svg';
 import logoutIcon from '../images/blackHeartIcon.svg';
 
 function Profile() {
-  const email = JSON.parse(localStorage.getItem('user')) || {};
+  const email = JSON.parse(localStorage.getItem('user')) || [];
   const history = useHistory();
 
   const handleFavRecipes = () => {
@@ -21,9 +21,6 @@ function Profile() {
 
   const handleLogout = () => {
     localStorage.clear();
-    // localStorage.setItem('doneRecipes', JSON.stringify([]));
-    // localStorage.setItem('favoriteRecipes', JSON.stringify([]));
-    // localStorage.setItem('inProgressRecipes', JSON.stringify({}));
     history.push('/');
   };
 
@@ -32,7 +29,6 @@ function Profile() {
       <Header title="Profile" />
       <p data-testid="profile-email">
         { Object.values(email)}
-        {' '}
       </p>
       <button
         type="button"
