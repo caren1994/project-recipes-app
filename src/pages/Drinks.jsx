@@ -72,13 +72,15 @@ function Drinks() {
       </button>
       <div className="flexbox">
         {renderData
-          .map((drink, index) => (<RecipeCard
-            index={ index }
-            key={ drink.idDrink }
-            id={ drink.idDrink }
-            name={ drink.strDrink }
-            src={ drink.strDrinkThumb }
-          />))}
+          .map((drink, index) => (
+            <div key={ drink.idDrink }>
+              <RecipeCard
+                index={ index }
+                id={ drink.idDrink }
+                name={ drink.strDrink }
+                src={ drink.strDrinkThumb }
+              />
+            </div>))}
       </div>
       <Footer />
     </div>

@@ -19,9 +19,9 @@ function Router() {
       <Route exact path="/meals" component={ Meals } />
       <Route exact path="/meals/:id" component={ MealsDetails } />
       <Route exact path="/meals/:id/in-progress" component={ MealsInProgress } />
-      <Route exact path="/drinks/:id/in-progress" component={ DrinksInProgress } />
       <Route exact path="/drinks" component={ Drinks } />
       <Route exact path="/drinks/:id" component={ DrinksDetails } />
+      <Route exact path="/drinks/:id/in-progress" component={ DrinksInProgress } />
       <Route exact path="/done-recipes" component={ DoneRecipes } />
       <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
     </Switch>

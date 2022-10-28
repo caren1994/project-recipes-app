@@ -23,7 +23,6 @@ function MealsDetails({ match: { params: { id } } }) {
     async function getRecipeById() {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
       const { meals } = await response.json();
-      console.log(meals);
       setRecipe(meals[0]);
     }
     getRecipeById();
@@ -35,7 +34,6 @@ function MealsDetails({ match: { params: { id } } }) {
       .filter((pair) => pair[0].includes('Ingredient') && pair[1] !== '')
       .filter((entry) => entry[1] !== null);
     setIngredients(ingredientList);
-    console.log(ingredientList);
   }
 
   function getMeasures(item) {
@@ -65,7 +63,7 @@ function MealsDetails({ match: { params: { id } } }) {
     const result = !doneRecipe.some((item) => item.id === id);
     setRenderBtn(result);
     const inProgressRecipe = JSON
-      .parse(localStorage.getItem('inProgressRecipes'));
+      .parse(localStorage.getItem('inProgressRecipes')) || { meals: {}, drinks: {} };
 
     if (!Object.keys(inProgressRecipe).includes('meals')) {
       setRenderContinue(null);

@@ -63,7 +63,7 @@ function DrinksDetails({ match: { params: { id } } }) {
     const result = !doneRecipe.some((item) => item.id === id);
     setRenderBtn(result);
     const inProgressRecipe = JSON
-      .parse(localStorage.getItem('inProgressRecipes'));
+      .parse(localStorage.getItem('inProgressRecipes')) || { meals: {}, drinks: {} };
 
     if (!Object.keys(inProgressRecipe).includes('drinks')) {
       setRenderContinue(null);
