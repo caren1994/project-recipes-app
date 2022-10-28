@@ -10,6 +10,9 @@ const localStorage = (id, local) => {
 };
 
 localStorage('user', { email: 'test@gmail.com' });
+localStorage('doneRecipes', []);
+localStorage('favoriteRecipes', []);
+localStorage('inProgressRecipes', {});
 
 describe('Profile component tests', () => {
   it('Checks if email and buttons are rendered', () => {
@@ -28,6 +31,11 @@ describe('Profile component tests', () => {
     expect(doneRecipes).toBeInTheDocument();
     expect(FavRecipes).toBeInTheDocument();
     expect(logoutBtn).toBeInTheDocument();
+
+    expect(JSON.parse(window.localStorage.getItem('user'))).toEqual({ email: 'test@gmail.com' });
+    expect(JSON.parse(window.localStorage.getItem('doneRecipes'))).toEqual([]);
+    expect(JSON.parse(window.localStorage.getItem('favoriteRecipes'))).toEqual([]);
+    expect(JSON.parse(window.localStorage.getItem('inProgressRecipes'))).toEqual({});
   });
 
   it('checks if the Favorite Recipes button forwards to the correct page.', () => {
@@ -67,6 +75,21 @@ describe('Profile component tests', () => {
     const logoutBtn = screen.getByTestId(/profile-logout-btn/i);
     userEvent.click(logoutBtn);
 
+    expect(JSON.parse(window.localStorage.getItem('user'))).toBeNull();
+    expect(JSON.parse(window.localStorage.getItem('doneRecipes'))).toBeNull();
+    expect(JSON.parse(window.localStorage.getItem('favoriteRecipes'))).toBeNull();
+    expect(JSON.parse(window.localStorage.getItem('inProgressRecipes'))).toBeNull();
+
     expect(history.location.pathname).toBe('/');
+  });
+
+  it('Checks when user enters Profile page without login', () => {
+    renderWithRouter(
+      <AppProvider>
+        <Profile />
+      </AppProvider>,
+    );
+    const email = screen.getByTestId('profile-email');
+    expect(email.textContent).toBe('');
   });
 });
