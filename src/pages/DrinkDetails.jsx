@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import RecipeDetails from '../components/RecipeDetails';
+import '../css/App.css';
+import ShareIcon from '../images/shareIcon.svg';
+
+const RECOMENDATION_NUMBER = 6;
 
 function DrinksDetails({ match: { params: { id } } }) {
   const [recipe, setRecipe] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
+  const [recomendationFood, setRecomendationFood] = useState([]);
+  const [renderBtn, setRenderBtn] = useState(false);
+  const [renderContinue, setRenderContinue] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const history = useHistory();
 
   function getIngredients(item) {
     const recipeEntries = Object.entries(item);
@@ -13,7 +25,6 @@ function DrinksDetails({ match: { params: { id } } }) {
       .filter((entry) => entry[0].includes('Ingredient'))
       .filter((entry) => entry[1] !== null);
     setIngredients(ingredientList);
-    console.log(recipeEntries);
   }
 
   function getMeasures(item) {
@@ -22,8 +33,6 @@ function DrinksDetails({ match: { params: { id } } }) {
       .filter((entry) => entry[0].includes('Measure'))
       .filter((entry) => entry[1] !== ' ');
     setMeasures(measureList);
-
-    console.log(measureList);
   }
 
   useEffect(() => {
@@ -40,6 +49,40 @@ function DrinksDetails({ match: { params: { id } } }) {
     getMeasures(recipe);
   }, [recipe]);
 
+  useEffect(() => {
+    async function getRecomendationFood() {
+      const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+      const { meals } = await response.json();
+      setRecomendationFood(meals.slice(0, RECOMENDATION_NUMBER));
+    }
+    getRecomendationFood();
+  }, []);
+
+  useEffect(() => {
+    const doneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const result = !doneRecipe.some((item) => item.id === id);
+    setRenderBtn(result);
+    const inProgressRecipe = JSON
+      .parse(localStorage.getItem('inProgressRecipes')) || { meals: {}, drinks: {} };
+
+    if (!Object.keys(inProgressRecipe).includes('drinks')) {
+      setRenderContinue(null);
+    } else {
+      setRenderContinue(inProgressRecipe.drinks[id]);
+    }
+  }, [id]);
+
+  const handleClick = () => {
+    if (!renderContinue) {
+      history.push(`/drinks/${id}/in-progress`);
+    }
+  };
+
+  const handleShareBtn = () => {
+    copy(`http://localhost:3000${history.location.pathname}`);
+    setIsCopied(true);
+  };
+
   return (
     <div>
       <h1>{id}</h1>
@@ -51,6 +94,50 @@ function DrinksDetails({ match: { params: { id } } }) {
         measures={ measures }
         instructions={ recipe.strInstructions }
       />
+      <h2>Recomendation:</h2>
+      <div className="carousel">
+        {recomendationFood
+          .map((e, index) => (
+            <div
+              className="carouselItem"
+              key={ e.idMeal }
+              data-testid={ `${index}-recommendation-card` }
+            >
+              <h3 data-testid={ `${index}-recommendation-title` }>{e.strMeal}</h3>
+              <img src={ e.strMealThumb } alt={ e.strMeal } width="250px" />
+            </div>))}
+
+      </div>
+      <div>
+        {renderBtn
+      && (
+        <button
+          className="fixed"
+          type="button"
+          data-testid="start-recipe-btn"
+          onClick={ handleClick }
+        >
+          {renderContinue ? 'Continue Recipe' : 'Start Recipe'}
+        </button>
+      )}
+        {isCopied && <p>Link copied!</p>}
+        <button
+          type="button"
+          onClick={ handleShareBtn }
+          className="btns"
+          data-testid="share-btn"
+        >
+          <img src={ ShareIcon } alt="share button" />
+        </button>
+        <button
+          className="btns"
+          type="button"
+          data-testid="favorite-btn"
+        >
+          Favorite
+
+        </button>
+      </div>
     </div>
   );
 }

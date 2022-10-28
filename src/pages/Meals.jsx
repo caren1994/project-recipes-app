@@ -28,7 +28,7 @@ function Meals() {
       setCategories(meals.slice(0, CATEGORY_QTD));
     }
     getCategories();
-  }, [filter, data]);
+  }, []);
 
   const MAX_SIZE = 12;
   const renderData = data.length > MAX_SIZE ? data.slice(0, MAX_SIZE) : data;
@@ -70,14 +70,18 @@ function Meals() {
       >
         All
       </button>
-      {/* data.length > 1 && */ renderData
-        .map((meal, index) => (<RecipeCard
-          index={ index }
-          key={ meal.idMeal }
-          id={ meal.idMeal }
-          name={ meal.strMeal }
-          src={ meal.strMealThumb }
-        />))}
+      <div className="flexbox">
+        {renderData
+          .map((meal, index) => (
+            <div key={ meal.idMeal }>
+              <RecipeCard
+                index={ index }
+                id={ meal.idMeal }
+                name={ meal.strMeal }
+                src={ meal.strMealThumb }
+              />
+            </div>))}
+      </div>
       <Footer />
     </div>
   );

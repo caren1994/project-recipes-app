@@ -81,11 +81,16 @@ function AppProvider({ children }) {
     }
   }, [searchSetup, getDrinkAPIResult, getMealAPIResult]);
 
+  useEffect(() => {
+    localStorage.setItem('doneRecipes', JSON.stringify([]));
+    localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    localStorage.setItem('inProgressRecipes', JSON.stringify({}));
+  }, []);
+
   const context = useMemo(() => ({
     data,
     getSearchSetup,
     getData,
-
   }), [data, getData]);
 
   return (

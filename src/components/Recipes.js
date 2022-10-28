@@ -7,7 +7,7 @@ function RecipeCard({ name, src, index, id }) {
 
   return (
     <Link to={ `${history.location.pathname}/${id}` }>
-      <div data-testid={ `${index}-recipe-card` }>
+      <div className="recipe-card" data-testid={ `${index}-recipe-card` }>
         <h3 data-testid={ `${index}-card-name` }>{name}</h3>
         <img width="100px" data-testid={ `${index}-card-img` } src={ src } alt={ name } />
       </div>

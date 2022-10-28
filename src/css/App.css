@@ -1,0 +1,52 @@
+body {
+  margin: auto;
+  text-align: center;
+  width: 360px;
+}
+
+.flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.recipe-card {
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: 5px 5px 2px 1px rgba(77, 77, 79, 0.2);
+  height: 250px;
+  margin: 10px 5px;
+  padding: 5px;
+  width: 150px;
+}
+
+.recipe-card img {
+  border-radius: 10px;
+}
+
+.recipe-card h3 {
+  text-align: center;
+  width: 100px;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: scroll;
+
+  /* height: 350px;
+width:500px ; */
+}
+
+.carouselItem {
+  width: 51%;
+}
+
+.fixed {
+  bottom: 0;
+  position: fixed;
+}
+
+.btns {
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
