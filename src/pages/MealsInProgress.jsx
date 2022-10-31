@@ -38,7 +38,8 @@ function MealsInProgress({ match: { params: { id } } }) {
   }, [id]);
 
   const handleShareBtn = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
+    copy(`http://localhost:3000/meals/${id}`);
+    console.log(history.location.pathname);
     setIsCopied(true);
   };
 

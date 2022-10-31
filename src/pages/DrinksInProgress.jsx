@@ -38,7 +38,7 @@ function DrinksInProgress({ match: { params: { id } } }) {
   }, [id]);
 
   const handleShareBtn = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
+    copy(`http://localhost:3000/drinks/${id}`);
     setIsCopied(true);
   };
 
