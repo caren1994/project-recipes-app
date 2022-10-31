@@ -83,7 +83,7 @@ function AppProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem('doneRecipes', JSON.stringify([]));
-    localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    // localStorage.setItem('favoriteRecipes', JSON.stringify([]));
     localStorage.setItem('inProgressRecipes', JSON.stringify({}));
   }, []);
 

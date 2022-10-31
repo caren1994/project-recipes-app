@@ -5,6 +5,8 @@ import copy from 'clipboard-copy';
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
 import ShareIcon from '../images/shareIcon.svg';
+import WhiteHeartIcon from '../images/whiteHeartIcon.svg';
+import BlackHeartIcon from '../images/blackHeartIcon.svg';
 
 const RECOMENDATION_NUMBER = 6;
 
@@ -16,6 +18,8 @@ function DrinksDetails({ match: { params: { id } } }) {
   const [renderBtn, setRenderBtn] = useState(false);
   const [renderContinue, setRenderContinue] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [isFavorite, setIsfavorite] = useState(false);
 
   const history = useHistory();
 
@@ -42,6 +46,11 @@ function DrinksDetails({ match: { params: { id } } }) {
       setRecipe(drinks[0]);
     }
     getRecipeById();
+    // recupera favoritos do localstorage:
+    const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    setFavorites(localFavorites);
+    // console.log(localFavorites.some((item) => item.id === id));
+    setIsfavorite(localFavorites.some((item) => item.id === id));
   }, [id]);
 
   useEffect(() => {
@@ -81,6 +90,27 @@ function DrinksDetails({ match: { params: { id } } }) {
   const handleShareBtn = () => {
     copy(`http://localhost:3000${history.location.pathname}`);
     setIsCopied(true);
+  };
+
+  const handleFavoriteBtn = () => {
+    if (isFavorite) {
+      const newFavorites = favorites.filter((item) => item.id !== id);
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(false);
+    } else {
+      const newFavorites = [...favorites, {
+        id: recipe.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: recipe.strCategory,
+        alcoholicOrNot: recipe.strAlcoholic,
+        name: recipe.strDrink,
+        image: recipe.strDrinkThumb }];
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(true);
+    }
   };
 
   return (
@@ -129,14 +159,27 @@ function DrinksDetails({ match: { params: { id } } }) {
         >
           <img src={ ShareIcon } alt="share button" />
         </button>
-        <button
-          className="btns"
-          type="button"
-          data-testid="favorite-btn"
-        >
-          Favorite
-
-        </button>
+        {isFavorite
+          ? (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ BlackHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="blackHeartIcon"
+            />
+          )
+          : (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ WhiteHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="whiteHeartIcon"
+            />
+          ) }
       </div>
     </div>
   );

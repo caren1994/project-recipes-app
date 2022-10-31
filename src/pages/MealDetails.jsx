@@ -5,6 +5,8 @@ import copy from 'clipboard-copy';
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
 import ShareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const RECOMENDATION_NUMBER = 6;
 
@@ -16,6 +18,8 @@ function MealsDetails({ match: { params: { id } } }) {
   const [renderBtn, setRenderBtn] = useState(false);
   const [renderContinue, setRenderContinue] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [isFavorite, setIsfavorite] = useState(false);
 
   const history = useHistory();
 
@@ -26,6 +30,12 @@ function MealsDetails({ match: { params: { id } } }) {
       setRecipe(meals[0]);
     }
     getRecipeById();
+    // recupera favoritos do localstorage:
+    const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    setFavorites(localFavorites);
+    // console.log(localFavorites.some((item) => item.id === id));
+    setIsfavorite(localFavorites.some((item) => item.id === id));
+    // console.log(localFavorites);
   }, [id]);
 
   function getIngredients(item) {
@@ -83,6 +93,27 @@ function MealsDetails({ match: { params: { id } } }) {
     setIsCopied(true);
   };
 
+  const handleFavoriteBtn = () => {
+    if (isFavorite) {
+      const newFavorites = favorites.filter((item) => item.id !== id);
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(false);
+    } else {
+      const newFavorites = [...favorites, {
+        id: recipe.idMeal,
+        type: 'meal',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        alcoholicOrNot: '',
+        name: recipe.strMeal,
+        image: recipe.strMealThumb }];
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(true);
+    }
+  };
+
   return (
     <div>
       <RecipeDetails
@@ -128,14 +159,27 @@ function MealsDetails({ match: { params: { id } } }) {
         >
           <img src={ ShareIcon } alt="share button" />
         </button>
-        <button
-          type="button"
-          className="btns"
-          data-testid="favorite-btn"
-        >
-          Favorite
-
-        </button>
+        {isFavorite
+          ? (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ blackHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="blackHeartIcon"
+            />
+          )
+          : (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ whiteHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="whiteHeartIcon"
+            />
+          ) }
       </div>
     </div>
   );
