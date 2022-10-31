@@ -5,6 +5,8 @@ import copy from 'clipboard-copy';
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
 import ShareIcon from '../images/shareIcon.svg';
+import WhiteHeartIcon from '../images/whiteHeartIcon.svg';
+import BlackHeartIcon from '../images/blackHeartIcon.svg';
 
 const RECOMENDATION_NUMBER = 6;
 
@@ -17,6 +19,7 @@ function DrinksDetails({ match: { params: { id } } }) {
   const [renderContinue, setRenderContinue] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isFavorite, setIsfavorite] = useState(false);
 
   const history = useHistory();
 
@@ -43,7 +46,11 @@ function DrinksDetails({ match: { params: { id } } }) {
       setRecipe(drinks[0]);
     }
     getRecipeById();
-    setFavorites(JSON.parse(localStorage.getItem('favoriteRecipes')) || []);
+    // recupera favoritos do localstorage:
+    const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    setFavorites(localFavorites);
+    // console.log(localFavorites.some((item) => item.id === id));
+    setIsfavorite(true);
   }, [id]);
 
   useEffect(() => {
@@ -86,16 +93,24 @@ function DrinksDetails({ match: { params: { id } } }) {
   };
 
   const handleFavoriteBtn = () => {
-    const newFavorites = [...favorites, {
-      id: recipe.idDrink,
-      type: 'drink',
-      nationality: '',
-      category: recipe.strCategory,
-      alcoholicOrNot: recipe.strAlcoholic,
-      name: recipe.strDrink,
-      image: recipe.strDrinkThumb }];
-
-    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+    if (isFavorite) {
+      const newFavorites = favorites.filter((item) => item.id !== id);
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(false);
+    } else {
+      const newFavorites = [...favorites, {
+        id: recipe.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: recipe.strCategory,
+        alcoholicOrNot: recipe.strAlcoholic,
+        name: recipe.strDrink,
+        image: recipe.strDrinkThumb }];
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(true);
+    }
   };
 
   return (
@@ -150,8 +165,13 @@ function DrinksDetails({ match: { params: { id } } }) {
           data-testid="favorite-btn"
           onClick={ handleFavoriteBtn }
         >
-          Favorite
-
+          {isFavorite
+            ? (
+              <img src={ BlackHeartIcon } alt="favorite heart" />
+            )
+            : (
+              <img src={ WhiteHeartIcon } alt="not favorite heart" />
+            ) }
         </button>
       </div>
     </div>

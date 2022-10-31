@@ -5,8 +5,8 @@ import copy from 'clipboard-copy';
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
 import ShareIcon from '../images/shareIcon.svg';
-import WhiteHeartIcon from '../images/whiteHeartIcon.svg';
-import BlackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const RECOMENDATION_NUMBER = 6;
 
@@ -30,10 +30,12 @@ function MealsDetails({ match: { params: { id } } }) {
       setRecipe(meals[0]);
     }
     getRecipeById();
+    // recupera favoritos do localstorage:
     const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     setFavorites(localFavorites);
-    setIsfavorite(localFavorites.some((item) => item.idMeal === id));
-    console.log(localFavorites);
+    // console.log(localFavorites.some((item) => item.id === id));
+    setIsfavorite(localFavorites.some((item) => item.id === id));
+    // console.log(localFavorites);
   }, [id]);
 
   function getIngredients(item) {
@@ -92,24 +94,25 @@ function MealsDetails({ match: { params: { id } } }) {
   };
 
   const handleFavoriteBtn = () => {
-    const newFavorites = [...favorites, {
-      id: recipe.idMeal,
-      type: 'meal',
-      nationality: recipe.strArea,
-      category: recipe.strCategory,
-      alcoholicOrNot: '',
-      name: recipe.strMeal,
-      image: recipe.strMealThumb }];
-    setFavorites(newFavorites);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
-    setIsfavorite(true);
+    if (isFavorite) {
+      const newFavorites = favorites.filter((item) => item.id !== id);
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(false);
+    } else {
+      const newFavorites = [...favorites, {
+        id: recipe.idMeal,
+        type: 'meal',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        alcoholicOrNot: '',
+        name: recipe.strMeal,
+        image: recipe.strMealThumb }];
+      setFavorites(newFavorites);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
+      setIsfavorite(true);
+    }
   };
-
-  // useEffect(() => {
-  //   const isMealFavorite = ;
-  //   console.log(isMealFavorite);
-  //   ;
-  // }, [favorites, id]);
 
   return (
     <div>
@@ -164,10 +167,18 @@ function MealsDetails({ match: { params: { id } } }) {
         >
           {isFavorite
             ? (
-              <img src={ BlackHeartIcon } alt="favorite heart" />
+              <img
+                // data-testid="favorite-btn"
+                src={ blackHeartIcon }
+                alt="blackHeartIcon"
+              />
             )
             : (
-              <img src={ WhiteHeartIcon } alt="not favorite heart" />
+              <img
+                // data-testid="favorite-btn"
+                src={ whiteHeartIcon }
+                alt="whiteHeartIcon"
+              />
             ) }
         </button>
       </div>
