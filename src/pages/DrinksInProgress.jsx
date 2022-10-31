@@ -14,7 +14,7 @@ function DrinksInProgress({ match: { params: { id } } }) {
   const [isFavorite, setIsfavorite] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
-  // const [checkIngredient, setCheckIngredient] = useState(false);
+  const [inProgressList, setInProgressList] = useState([]);
 
   const history = useHistory();
 
@@ -29,6 +29,12 @@ function DrinksInProgress({ match: { params: { id } } }) {
     const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     setFavorites(localFavorites);
     setIsfavorite(localFavorites.some((item) => item.id === id));
+    // recupera inProgress do localstorage:
+    const localInProgress = JSON
+      .parse(localStorage.getItem('inProgressRecipes')) || { drinks: {}, meals: {} };
+    if (Object.keys(localInProgress.drinks).includes(id)) {
+      setInProgressList(localInProgress.drinks[id]);
+    }
   }, [id]);
 
   const handleShareBtn = () => {
@@ -77,10 +83,21 @@ function DrinksInProgress({ match: { params: { id } } }) {
     }
   };
 
+  useEffect(() => {
+    const { drinks, meals } = JSON
+      .parse(localStorage
+        .getItem('inProgressRecipe')) || { drinks: {}, meals: {} };
+    drinks[id] = inProgressList;
+    const attLocalStorage = { drinks, meals };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(attLocalStorage));
+  }, [inProgressList, id]);
+
   const handleCheckbox = ({ target }) => {
     target.parentElement.className = 'ingredientList';
-    // setCheckIngredient(true);
+    setInProgressList([...inProgressList, target.value]);
   };
+
+  const isChecked = (ingredient) => inProgressList.some((item) => item === ingredient);
 
   return (
     <section>
@@ -130,12 +147,14 @@ function DrinksInProgress({ match: { params: { id } } }) {
               <label
                 htmlFor={ `ingredient-${ingredient[1]}` }
                 data-testid={ `${index}-ingredient-step` }
+                className={ isChecked(`${ingredient[1]}`) ? 'ingredientList' : null }
               >
                 <input
                   type="checkbox"
                   id={ `ingredient-${ingredient[1]}` }
-                  onClick={ handleCheckbox }
-                  value={ `${ingredient[1]} - ${measures[index][1] || ''}` }
+                  checked={ isChecked(`${ingredient[1]}`) }
+                  onChange={ handleCheckbox }
+                  value={ `${ingredient[1]}` }
                 />
                 {`${ingredient[1]} - ${measures[index][1] || ''}`}
               </label>
