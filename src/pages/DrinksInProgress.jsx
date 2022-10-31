@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
-import { useHistory } from 'react-router-dom';
 import ShareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -15,8 +14,6 @@ function DrinksInProgress({ match: { params: { id } } }) {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
-
-  const history = useHistory();
 
   useEffect(() => {
     async function getRecipe() {
@@ -145,23 +142,30 @@ function DrinksInProgress({ match: { params: { id } } }) {
           {ingredients.map((ingredient, index) => (
             <li key={ ingredient[0] }>
               <label
-                htmlFor={ `ingredient-${ingredient[1]}` }
+                htmlFor={ `ingredient-${ingredient[1]}-${measures[index][1]}` }
                 data-testid={ `${index}-ingredient-step` }
                 className={ isChecked(`${ingredient[1]}`) ? 'ingredientList' : null }
               >
                 <input
                   type="checkbox"
-                  id={ `ingredient-${ingredient[1]}` }
-                  checked={ isChecked(`${ingredient[1]}`) }
+                  id={ `ingredient-${ingredient[1]}-${measures[index][1]}` }
+                  checked={ isChecked(`${ingredient[1]} - ${measures[index][1]}`) }
                   onChange={ handleCheckbox }
-                  value={ `${ingredient[1]}` }
+                  value={ `${ingredient[1]} - ${measures[index][1]}` }
                 />
                 {`${ingredient[1]} - ${measures[index][1] || ''}`}
               </label>
             </li>
           ))}
         </ul>
-        <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
+        <button
+          type="button"
+          disabled={ inProgressList.length < ingredients.length }
+          data-testid="finish-recipe-btn"
+        >
+          Finish Recipe
+
+        </button>
       </div>
     </section>
   );
