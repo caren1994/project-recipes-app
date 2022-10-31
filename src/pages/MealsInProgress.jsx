@@ -11,6 +11,8 @@ function MealsInProgress({ match: { params: { id } } }) {
   const [isCopied, setIsCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [isFavorite, setIsfavorite] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [measures, setMeasures] = useState([]);
 
   const history = useHistory();
 
@@ -31,6 +33,26 @@ function MealsInProgress({ match: { params: { id } } }) {
     copy(`http://localhost:3000${history.location.pathname}`);
     setIsCopied(true);
   };
+
+  function getMeasures(item) {
+    const recipeEntries = Object.entries(item);
+    const measureList = recipeEntries
+      .filter((pair) => pair[0].includes('Measure') && pair[1] !== ' ');
+    setMeasures(measureList);
+  }
+
+  function getIngredients(item) {
+    const recipeEntries = Object.entries(item);
+    const ingredientList = recipeEntries
+      .filter((pair) => pair[0].includes('Ingredient') && pair[1] !== '')
+      .filter((entry) => entry[1] !== null);
+    setIngredients(ingredientList);
+  }
+
+  useEffect(() => {
+    getIngredients(recipe);
+    getMeasures(recipe);
+  }, [recipe]);
 
   const handleFavoriteBtn = () => {
     if (isFavorite) {
@@ -95,6 +117,23 @@ function MealsInProgress({ match: { params: { id } } }) {
               alt="whiteHeartIcon"
             />
           ) }
+        <ul>
+          {ingredients.map((ingredient, index) => (
+            <li key={ ingredient[0] }>
+              <label
+                htmlFor={ `ingredient-${ingredient[1]}` }
+                data-testid={ `${index}-ingredient-step` }
+              >
+                <input
+                  type="checkbox"
+                  id={ `ingredient-${ingredient[1]}` }
+                  value={ `${ingredient[1]} - ${measures[index][1] || ''}` }
+                />
+                {`${ingredient[1]} - ${measures[index][1] || ''}`}
+              </label>
+            </li>
+          ))}
+        </ul>
         <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
       </div>
     </section>
