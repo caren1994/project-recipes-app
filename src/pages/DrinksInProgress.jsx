@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import ShareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import '../css/App.css';
 
 function DrinksInProgress({ match: { params: { id } } }) {
   const [recipe, setRecipe] = useState({});
@@ -13,6 +14,7 @@ function DrinksInProgress({ match: { params: { id } } }) {
   const [isFavorite, setIsfavorite] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
+  // const [checkIngredient, setCheckIngredient] = useState(false);
 
   const history = useHistory();
 
@@ -75,6 +77,11 @@ function DrinksInProgress({ match: { params: { id } } }) {
     }
   };
 
+  const handleCheckbox = ({ target }) => {
+    target.parentElement.className = 'ingredientList';
+    // setCheckIngredient(true);
+  };
+
   return (
     <section>
       <img
@@ -127,6 +134,7 @@ function DrinksInProgress({ match: { params: { id } } }) {
                 <input
                   type="checkbox"
                   id={ `ingredient-${ingredient[1]}` }
+                  onClick={ handleCheckbox }
                   value={ `${ingredient[1]} - ${measures[index][1] || ''}` }
                 />
                 {`${ingredient[1]} - ${measures[index][1] || ''}`}

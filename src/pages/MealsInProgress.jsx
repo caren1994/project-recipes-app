@@ -75,6 +75,10 @@ function MealsInProgress({ match: { params: { id } } }) {
     }
   };
 
+  const handleCheckbox = ({ target }) => {
+    target.parentElement.className = 'ingredientList';
+  };
+
   return (
     <section>
       <img
@@ -127,6 +131,7 @@ function MealsInProgress({ match: { params: { id } } }) {
                 <input
                   type="checkbox"
                   id={ `ingredient-${ingredient[1]}` }
+                  onClick={ handleCheckbox }
                   value={ `${ingredient[1]} - ${measures[index][1] || ''}` }
                 />
                 {`${ingredient[1]} - ${measures[index][1] || ''}`}
