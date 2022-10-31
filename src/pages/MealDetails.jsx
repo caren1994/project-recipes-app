@@ -159,28 +159,27 @@ function MealsDetails({ match: { params: { id } } }) {
         >
           <img src={ ShareIcon } alt="share button" />
         </button>
-        <button
-          type="button"
-          className="btns"
-          data-testid="favorite-btn"
-          onClick={ handleFavoriteBtn }
-        >
-          {isFavorite
-            ? (
-              <img
-                // data-testid="favorite-btn"
-                src={ blackHeartIcon }
-                alt="blackHeartIcon"
-              />
-            )
-            : (
-              <img
-                // data-testid="favorite-btn"
-                src={ whiteHeartIcon }
-                alt="whiteHeartIcon"
-              />
-            ) }
-        </button>
+        {isFavorite
+          ? (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ blackHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="blackHeartIcon"
+            />
+          )
+          : (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ whiteHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="whiteHeartIcon"
+            />
+          ) }
       </div>
     </div>
   );

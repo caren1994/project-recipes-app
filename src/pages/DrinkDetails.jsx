@@ -50,7 +50,7 @@ function DrinksDetails({ match: { params: { id } } }) {
     const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     setFavorites(localFavorites);
     // console.log(localFavorites.some((item) => item.id === id));
-    setIsfavorite(true);
+    setIsfavorite(localFavorites.some((item) => item.id === id));
   }, [id]);
 
   useEffect(() => {
@@ -159,20 +159,27 @@ function DrinksDetails({ match: { params: { id } } }) {
         >
           <img src={ ShareIcon } alt="share button" />
         </button>
-        <button
-          className="btns"
-          type="button"
-          data-testid="favorite-btn"
-          onClick={ handleFavoriteBtn }
-        >
-          {isFavorite
-            ? (
-              <img src={ BlackHeartIcon } alt="favorite heart" />
-            )
-            : (
-              <img src={ WhiteHeartIcon } alt="not favorite heart" />
-            ) }
-        </button>
+        {isFavorite
+          ? (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ BlackHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="blackHeartIcon"
+            />
+          )
+          : (
+            <input
+              type="image"
+              className="btns"
+              data-testid="favorite-btn"
+              src={ WhiteHeartIcon }
+              onClick={ handleFavoriteBtn }
+              alt="whiteHeartIcon"
+            />
+          ) }
       </div>
     </div>
   );
