@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import ShareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -14,6 +15,7 @@ function DrinksInProgress({ match: { params: { id } } }) {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     async function getRecipe() {
@@ -96,6 +98,25 @@ function DrinksInProgress({ match: { params: { id } } }) {
 
   const isChecked = (ingredient) => inProgressList.some((item) => item === ingredient);
 
+  const finishRecipe = () => {
+    const localDoneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const doneRecipe = {
+      id: recipe.idDrink,
+      type: 'drink',
+      nationality: '',
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.strAlcoholic,
+      name: recipe.strDrink,
+      image: recipe.strDrinkThumb,
+      doneDate: new Date(),
+      tags: recipe.strTags ? recipe.strTags.split(',') : [],
+
+    };
+    const attLocalDoneRecipe = JSON.stringify([...localDoneRecipe, doneRecipe]);
+    localStorage.setItem('doneRecipes', attLocalDoneRecipe);
+    history.push('/done-recipes');
+  };
+
   return (
     <section>
       <img
@@ -162,6 +183,7 @@ function DrinksInProgress({ match: { params: { id } } }) {
           type="button"
           disabled={ inProgressList.length < ingredients.length }
           data-testid="finish-recipe-btn"
+          onClick={ finishRecipe }
         >
           Finish Recipe
 
