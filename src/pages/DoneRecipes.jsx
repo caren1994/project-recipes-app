@@ -1,5 +1,6 @@
-// import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
+import ShareIcon from '../images/shareIcon.svg';
 
 function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
@@ -17,27 +18,48 @@ function DoneRecipes() {
         <button type="button" data-testid="filter-by-meal-btn">Meals</button>
         <button type="button" data-testid="filter-by-drink-btn">Drinks</button>
       </div>
-      {doneRecipes.map((e, index) => (
+      {doneRecipes.map((recipe, index) => (
         <div key={ index }>
-          <img alt="imagem" data-testid={ `${index}-horizontal-image` } />
-          <p data-testid={ `${index}-horizontal-top-text` }>texto </p>
-          <h2 data-testid={ `${index}-horizontal-name` }> texto</h2>
-          <p data-testid={ `${index}-horizontal-done-date` }> texto</p>
+          <img
+            alt="imagem"
+            src={ recipe.image }
+            data-testid={ `${index}-horizontal-image` }
+            width="200px"
+          />
+          <h2 data-testid={ `${index}-horizontal-name` }>
+            {recipe.name}
+          </h2>
+          <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
           <div>
             {
-              e.tags.map((tag, i) => (
-                <span key={ i } data-testid={ `${index}-${tagName}-horizontal-tag` }>
+              recipe.tags.slice(0, 2).map((tag, i) => (
+                <span key={ i } data-testid={ `${index}-${tag}-horizontal-tag` }>
                   {tag}
                 </span>
               ))
             }
           </div>
-          <button
+          {recipe.type === 'meal'
+            ? (
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                {`${recipe.nationality} - ${recipe.category}`}
+              </p>
+            )
+            : (
+
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                {`${recipe.alcoholicOrNot} - ${recipe.category}`}
+              </p>
+
+            )}
+
+          <input
+            type="image"
+            className="btns"
             data-testid={ `${index}-horizontal-share-btn` }
-            type="button"
-          >
-            Compartilhar Receita
-          </button>
+            src={ ShareIcon }
+            alt="share button"
+          />
         </div>
       ))}
     </div>
