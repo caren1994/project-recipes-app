@@ -1,14 +1,30 @@
 import React, { useEffect, useState } from 'react';
+// import { useHistory } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import Header from '../components/Header';
 import ShareIcon from '../images/shareIcon.svg';
 
 function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
+  const [isCopied, setIsCopied] = useState(false);
+
+  // const history = useHistory();
 
   useEffect(() => {
     const localDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
     setDoneRecipes(localDoneRecipes);
   }, []);
+
+  const handleShareBtn = (recipe) => {
+    if (recipe.type === 'meal') {
+      copy(`http://localhost:3000/meals/${recipe.id}`);
+      console.log(`http://localhost:3000/meals/${recipe.id}`);
+    } else {
+      copy(`http://localhost:3000/drinks/${recipe.id}`);
+      console.log(`http://localhost:3000/drinks/${recipe.id}`);
+    }
+    setIsCopied(true);
+  };
 
   return (
     <div>
@@ -19,7 +35,7 @@ function DoneRecipes() {
         <button type="button" data-testid="filter-by-drink-btn">Drinks</button>
       </div>
       {doneRecipes.map((recipe, index) => (
-        <div key={ index }>
+        <div key={ recipe.id }>
           <img
             alt="imagem"
             src={ recipe.image }
@@ -33,7 +49,10 @@ function DoneRecipes() {
           <div>
             {
               recipe.tags.slice(0, 2).map((tag, i) => (
-                <span key={ i } data-testid={ `${index}-${tag}-horizontal-tag` }>
+                <span
+                  key={ `${tag}-${i}` }
+                  data-testid={ `${index}-${tag}-horizontal-tag` }
+                >
                   {tag}
                 </span>
               ))
@@ -54,12 +73,14 @@ function DoneRecipes() {
             )}
 
           <input
+            onClick={ () => handleShareBtn(recipe) }
             type="image"
             className="btns"
             data-testid={ `${index}-horizontal-share-btn` }
             src={ ShareIcon }
             alt="share button"
           />
+          {isCopied && <p>Link copied!</p>}
         </div>
       ))}
     </div>
