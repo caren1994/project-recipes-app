@@ -50,3 +50,7 @@ width:500px ; */
   margin-bottom: 50px;
   margin-top: 50px;
 }
+
+.ingredientList {
+  text-decoration: line-through solid black;
+}
