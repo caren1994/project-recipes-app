@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import copy from 'clipboard-copy';
+import { useHistory } from 'react-router-dom';
 import ShareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
@@ -13,6 +14,7 @@ function MealsInProgress({ match: { params: { id } } }) {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [inProgressList, setInProgressList] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     async function getRecipe() {
@@ -95,6 +97,26 @@ function MealsInProgress({ match: { params: { id } } }) {
 
   const isChecked = (ingredient) => inProgressList.some((item) => item === ingredient);
 
+  const finishRecipe = () => {
+    const localDoneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+    const doneRecipe = {
+      id: recipe.idMeal,
+      type: 'meal',
+      nationality: recipe.strArea,
+      category: recipe.strCategory,
+      alcoholicOrNot: '',
+      name: recipe.strMeal,
+      image: recipe.strMealThumb,
+      doneDate: new Date(),
+      tags: recipe.strTags ? recipe.strTags.split(',') : [],
+
+    };
+    console.log(doneRecipe);
+    const attLocalDoneRecipe = JSON.stringify([...localDoneRecipe, doneRecipe]);
+    localStorage.setItem('doneRecipes', attLocalDoneRecipe);
+    history.push('/done-recipes');
+  };
+
   return (
     <section>
       <img
@@ -162,6 +184,7 @@ function MealsInProgress({ match: { params: { id } } }) {
           type="button"
           disabled={ inProgressList.length < ingredients.length }
           data-testid="finish-recipe-btn"
+          onClick={ finishRecipe }
         >
           Finish Recipe
 

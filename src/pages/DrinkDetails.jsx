@@ -181,6 +181,7 @@ function DrinksDetails({ match: { params: { id } } }) {
             />
           ) }
       </div>
+
     </div>
   );
 }
