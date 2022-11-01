@@ -42,6 +42,16 @@ function FavoriteRecipes() {
     setIsCopied(true);
   };
 
+  useEffect(() => {
+    setFavoriteRecipesFiltered(favoriteRecipes);
+  }, [favoriteRecipes]);
+
+  const removeFavorite = (recipe) => {
+    const attFavorites = favoriteRecipes.filter((item) => item.id !== recipe.id);
+    setFavoriteRecipes(attFavorites);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(attFavorites));
+  };
+
   return (
     <div>
       <Header title="Favorite Recipes" />
@@ -105,7 +115,7 @@ function FavoriteRecipes() {
               className="btns"
               data-testid={ `${index}-horizontal-favorite-btn` }
               src={ BlackHeartIcon }
-              onClick={ () => {} }
+              onClick={ () => removeFavorite(recipe) }
               alt="blackHeartIcon"
             />
           </div>
