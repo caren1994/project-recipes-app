@@ -7,10 +7,12 @@ import ShareIcon from '../images/shareIcon.svg';
 function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [isCopied, setIsCopied] = useState(false);
+  const [doneRecipesFiltered, setDoneRecipesFiltered] = useState([]);
 
   useEffect(() => {
     const localDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
     setDoneRecipes(localDoneRecipes);
+    setDoneRecipesFiltered(localDoneRecipes);
   }, []);
 
   const handleShareBtn = (recipe) => {
@@ -26,23 +28,53 @@ function DoneRecipes() {
 
   const isMealOrDrink = (recipe) => {
     if (recipe.type === 'meal') {
-      console.log('oi meal');
       return `/meals/${recipe.id}`;
     }
-    console.log('oi drink');
     return `/drinks/${recipe.id}`;
+  };
+
+  const handleFilter = ({ target }) => {
+    switch (target.innerText) {
+    case 'Drinks':
+      setDoneRecipesFiltered(doneRecipes.filter((recipe) => recipe.type === 'drink'));
+      break;
+    case 'Meals':
+      setDoneRecipesFiltered(doneRecipes.filter((recipe) => recipe.type === 'meal'));
+      break;
+    default:
+      setDoneRecipesFiltered(doneRecipes);
+      break;
+    }
   };
 
   return (
     <div>
       <Header title="Done Recipes" />
       <div>
-        <button type="button" data-testid="filter-by-all-btn">All</button>
-        <button type="button" data-testid="filter-by-meal-btn">Meals</button>
-        <button type="button" data-testid="filter-by-drink-btn">Drinks</button>
+        <button
+          type="button"
+          data-testid="filter-by-all-btn"
+          onClick={ handleFilter }
+        >
+          All
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-meal-btn"
+          onClick={ handleFilter }
+        >
+          Meals
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-drink-btn"
+          onClick={ handleFilter }
+        >
+          Drinks
+        </button>
       </div>
       <div>
-        {doneRecipes.map((recipe, index) => (
+        {doneRecipesFiltered.map((recipe, index) => (
           <div key={ recipe.id }>
             <Link to={ isMealOrDrink(recipe) }>
               <img
