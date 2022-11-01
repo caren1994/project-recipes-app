@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import copy from 'clipboard-copy';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ShareIcon from '../images/shareIcon.svg';
 import BlackHeartIcon from '../images/blackHeartIcon.svg';
@@ -52,6 +53,13 @@ function FavoriteRecipes() {
     localStorage.setItem('favoriteRecipes', JSON.stringify(attFavorites));
   };
 
+  const isMealOrDrink = (recipe) => {
+    if (recipe.type === 'meal') {
+      return `/meals/${recipe.id}`;
+    }
+    return `/drinks/${recipe.id}`;
+  };
+
   return (
     <div>
       <Header title="Favorite Recipes" />
@@ -81,15 +89,19 @@ function FavoriteRecipes() {
       {
         favoriteRecipesFiltered.map((recipe, index) => (
           <div key={ recipe.id }>
-            <img
-              alt="imagem"
-              src={ recipe.image }
-              data-testid={ `${index}-horizontal-image` }
-              width="200px"
-            />
-            <h2 data-testid={ `${index}-horizontal-name` }>
-              {recipe.name}
-            </h2>
+            <Link to={ isMealOrDrink(recipe) }>
+              <img
+                alt="imagem"
+                src={ recipe.image }
+                data-testid={ `${index}-horizontal-image` }
+                width="200px"
+              />
+            </Link>
+            <Link to={ isMealOrDrink(recipe) }>
+              <h2 data-testid={ `${index}-horizontal-name` }>
+                {recipe.name}
+              </h2>
+            </Link>
             {recipe.type === 'meal'
               ? (
                 <p data-testid={ `${index}-horizontal-top-text` }>
