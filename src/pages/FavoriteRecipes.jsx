@@ -11,7 +11,7 @@ function FavoriteRecipes() {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
-    const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     setFavoriteRecipes(localFavorites);
     setFavoriteRecipesFiltered(localFavorites);
   }, []);
