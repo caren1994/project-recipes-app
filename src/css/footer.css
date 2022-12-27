@@ -1,5 +1,11 @@
 .footer {
-  background-color: white;
+
+ 
+  display:flex;
+  justify-content: space-between;
+  width: 360px;
   bottom: 0;
   position: fixed;
+  margin-left: -18px;
+  
 }

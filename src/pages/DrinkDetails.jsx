@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import copy from 'clipboard-copy';
+import copy from 'clipboard-copy';// importação paara o botao do compartilhar que copia a url
 import RecipeDetails from '../components/RecipeDetails';
 import '../css/App.css';
 import ShareIcon from '../images/shareIcon.svg';
@@ -124,7 +124,13 @@ function DrinksDetails({ match: { params: { id } } }) {
         measures={ measures }
         instructions={ recipe.strInstructions }
       />
-      <h2>Recomendation:</h2>
+      <h2
+        className="font-medium
+        text-lg mt-8 mb-8"
+      >
+        Recomendation:
+
+      </h2>
       <div className="carousel">
         {recomendationFood
           .map((e, index) => (
@@ -151,35 +157,37 @@ function DrinksDetails({ match: { params: { id } } }) {
         </button>
       )}
         {isCopied && <p>Link copied!</p>}
-        <button
-          type="button"
-          onClick={ handleShareBtn }
-          className="btns"
-          data-testid="share-btn"
-        >
-          <img src={ ShareIcon } alt="share button" />
-        </button>
-        {isFavorite
-          ? (
-            <input
-              type="image"
-              className="btns"
-              data-testid="favorite-btn"
-              src={ BlackHeartIcon }
-              onClick={ handleFavoriteBtn }
-              alt="blackHeartIcon"
-            />
-          )
-          : (
-            <input
-              type="image"
-              className="btns"
-              data-testid="favorite-btn"
-              src={ WhiteHeartIcon }
-              onClick={ handleFavoriteBtn }
-              alt="whiteHeartIcon"
-            />
-          ) }
+        <div className="flex justify-center items-center">
+          <button
+            type="button"
+            onClick={ handleShareBtn }
+            className="btns mr-4"
+            data-testid="share-btn"
+          >
+            <img src={ ShareIcon } alt="share button" />
+          </button>
+          {isFavorite
+            ? (
+              <input
+                type="image"
+                className="btns"
+                data-testid="favorite-btn"
+                src={ BlackHeartIcon }
+                onClick={ handleFavoriteBtn }
+                alt="blackHeartIcon"
+              />
+            )
+            : (
+              <input
+                type="image"
+                className="btns"
+                data-testid="favorite-btn"
+                src={ WhiteHeartIcon }
+                onClick={ handleFavoriteBtn }
+                alt="whiteHeartIcon"
+              />
+            ) }
+        </div>
       </div>
 
     </div>

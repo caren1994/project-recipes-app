@@ -6,10 +6,11 @@ import mealIcon from '../images/mealIcon.svg';
 import '../css/footer.css';
 
 function Footer() {
-  return (
+  return (// renderiza o footer com link que pode te enviar para pagina de comida e bebida
+  // tem que posicionar ele de forma fixa por isso usamos o css
     <footer
       data-testid="footer"
-      className="footer"
+      className=" footer bg-orange-400"
     >
       <Link to="/drinks">
         <img

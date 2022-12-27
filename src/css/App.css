@@ -1,7 +1,22 @@
 body {
+display: flex;
+justify-content: center;
+align-items: center;
   margin: auto;
   text-align: center;
-  width: 360px;
+  width: 330px;
+
+
+
+  
+  
+}
+.bodyy{
+  background-image: url("../images/fundo2.jpg");
+  background-repeat: no-repeat;
+
+
+  
 }
 
 .flexbox {
@@ -11,13 +26,22 @@ body {
 }
 
 .recipe-card {
-  border: 1px solid black;
+border:1px solid black;
   border-radius: 10px;
   box-shadow: 5px 5px 2px 1px rgba(77, 77, 79, 0.2);
-  height: 250px;
+  height: 220px;
   margin: 10px 5px;
   padding: 5px;
   width: 150px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+
+
+
+}
+.recipe{
+   box-shadow: 5px 5px 2px 1px rgba(77, 77, 79, 0.2);
 }
 
 .recipe-card img {
@@ -27,18 +51,6 @@ body {
 .recipe-card h3 {
   text-align: center;
   width: 100px;
-}
-
-.carousel {
-  display: flex;
-  overflow-x: scroll;
-
-  /* height: 350px;
-width:500px ; */
-}
-
-.carouselItem {
-  width: 51%;
 }
 
 .fixed {
@@ -53,4 +65,14 @@ width:500px ; */
 
 .ingredientList {
   text-decoration: line-through solid black;
+} 
+.carousel {
+  display: flex;
+  overflow-x: scroll;
+
+ }
+
+.carouselItem {
+  width: 51%;
 }
+

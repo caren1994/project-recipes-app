@@ -56,6 +56,7 @@ function Drinks() {
       {categories
         .map((category) => (
           <button
+            className="box-border border-2 w-32 bg-orange-400 rounded-md mr-3 text-white"
             data-testid={ `${category.strCategory}-category-filter` }
             type="button"
             key={ category.strCategory }
@@ -64,13 +65,15 @@ function Drinks() {
             {category.strCategory}
           </button>))}
       <button
+        className="box-border
+        border-2 w-32 bg-orange-400 rounded-md mr-3  mb-8 text-white"
         type="button"
         data-testid="All-category-filter"
         onClick={ handleClickAll }
       >
         All
       </button>
-      <div className="flexbox">
+      <div className="flexbox mb-14">
         {renderData
           .map((drink, index) => (
             <div key={ drink.idDrink }>

@@ -12,27 +12,28 @@ function FavoriteRecipes() {
 
   useEffect(() => {
     const localFavorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-    setFavoriteRecipes(localFavorites);
-    setFavoriteRecipesFiltered(localFavorites);
+    setFavoriteRecipes(localFavorites);// recupera oq vem do local e salva no estado
+    setFavoriteRecipesFiltered(localFavorites);// salva uma copia para o filtro
   }, []);
 
   const handleFilter = ({ target }) => {
     switch (target.innerText) {
-    case 'Drinks':
+    case 'Drinks':// se for drink retorna todos com o type de drinks
       setFavoriteRecipesFiltered(favoriteRecipes
         .filter((recipe) => recipe.type === 'drink'));
-      break;
-    case 'Meals':
+      break; // altera o array de copia
+    case 'Meals':// se for meals retorna todos com o type de meals
       setFavoriteRecipesFiltered(favoriteRecipes
         .filter((recipe) => recipe.type === 'meal'));
-      break;
-    default:
+      break; // altera o array de copia
+    default:// retorna o array original do retorno do fetch
       setFavoriteRecipesFiltered(favoriteRecipes);
       break;
+      // altera o array de copia
     }
   };
 
-  const handleShareBtn = (recipe) => {
+  const handleShareBtn = (recipe) => { // funcao que copia o link da url se for meal ou drink
     if (recipe.type === 'meal') {
       copy(`http://localhost:3000/meals/${recipe.id}`);
       console.log(`http://localhost:3000/meals/${recipe.id}`);
@@ -40,21 +41,24 @@ function FavoriteRecipes() {
       copy(`http://localhost:3000/drinks/${recipe.id}`);
       console.log(`http://localhost:3000/drinks/${recipe.id}`);
     }
-    setIsCopied(true);
+    setIsCopied(true);// muda para true para aprecer a mensagem
   };
 
   useEffect(() => {
     setFavoriteRecipesFiltered(favoriteRecipes);
   }, [favoriteRecipes]);
+  // toda vez que o favoritesrecipes atualizar salva no estado que faz os filtros no futuro
 
-  const removeFavorite = (recipe) => {
+  const removeFavorite = (recipe) => { // recebe recipe do map
     const attFavorites = favoriteRecipes.filter((item) => item.id !== recipe.id);
-    setFavoriteRecipes(attFavorites);
+    // retorna um array novo com as recipes que forem diferentes da recipe do id enviado
+    setFavoriteRecipes(attFavorites);// salva no estado o favoritos atualizado
     localStorage.setItem('favoriteRecipes', JSON.stringify(attFavorites));
+    // e salva no localstorage os favoritos atualizados
   };
 
   const isMealOrDrink = (recipe) => {
-    if (recipe.type === 'meal') {
+    if (recipe.type === 'meal') { // funcao para redirecionar para a tela de detalhes de meals ou dinks
       return `/meals/${recipe.id}`;
     }
     return `/drinks/${recipe.id}`;
@@ -70,6 +74,7 @@ function FavoriteRecipes() {
           onClick={ handleFilter }
         >
           All
+          {/* // botao de filtragem por todas as receitas  */}
         </button>
         <button
           type="button"
@@ -77,6 +82,7 @@ function FavoriteRecipes() {
           onClick={ handleFilter }
         >
           Meals
+          {/* // botao de filtragem por  receitas  meals */}
         </button>
         <button
           type="button"
@@ -84,12 +90,15 @@ function FavoriteRecipes() {
           onClick={ handleFilter }
         >
           Drinks
+          {/* // botao de filtragem por  receitas drinks */}
         </button>
       </div>
       {
         favoriteRecipesFiltered.map((recipe, index) => (
+          // renderiza as receitas favoritadas do array de copia com filtro ou sem
           <div key={ recipe.id }>
             <Link to={ isMealOrDrink(recipe) }>
+              {/* //link no img e no name que muda para a pagina de detalhes da receita */}
               <img
                 alt="imagem"
                 src={ recipe.image }
@@ -98,6 +107,7 @@ function FavoriteRecipes() {
               />
             </Link>
             <Link to={ isMealOrDrink(recipe) }>
+              {/* //link no img e no name que muda para a pagina de detalhes da receita */}
               <h2 data-testid={ `${index}-horizontal-name` }>
                 {recipe.name}
               </h2>
@@ -106,16 +116,18 @@ function FavoriteRecipes() {
               ? (
                 <p data-testid={ `${index}-horizontal-top-text` }>
                   {`${recipe.nationality} - ${recipe.category}`}
+                  {/* a tag que falta se for meal aparece natinality e category */}
                 </p>
               )
               : (
                 <p data-testid={ `${index}-horizontal-top-text` }>
                   {`${recipe.alcoholicOrNot} - ${recipe.category}`}
+                  {/* a tag que falta se for drink aparece alcoholicornot e category */}
                 </p>
               )}
             {isCopied && <p>Link copied!</p>}
             <input
-              onClick={ () => handleShareBtn(recipe) }
+              onClick={ () => handleShareBtn(recipe) } // funcao edo botao que compartilha
               type="image"
               className="btns"
               data-testid={ `${index}-horizontal-share-btn` }
@@ -124,7 +136,7 @@ function FavoriteRecipes() {
             />
             <input
               type="image"
-              className="btns"
+              className="btns" // botao que  remove a recita dos favoritos
               data-testid={ `${index}-horizontal-favorite-btn` }
               src={ BlackHeartIcon }
               onClick={ () => removeFavorite(recipe) }
