@@ -12,7 +12,7 @@ Esse projeto foi desenvolvido usando as seguintes tecnologias:
 - VS Code
 
 ## Como usar
-Para clonar e rodar a aplicação, você precisará do Git, VS Code, Node.js :
+Para clonar e rodar a aplicação, você precisará do Git, VS Code, Node.js
 
 # Clone o repositório
 $ git clone https://github.com/isaacost/recipes-app
