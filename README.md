@@ -1,13 +1,25 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+# Projeto App de Receitas
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+
+## Tecnologias
+Esse projeto foi desenvolvido usando as seguintes tecnologias:
+
+- React.js
+- React Testing Library
+- TailwindCSS
+- Figma
+- VS Code
+
+## Como usar
+Para clonar e rodar a aplicação, você precisará do Git, VS Code, Node.js, NPM . Da linha de comando:
+
+# Clone o repositório
+$ git clone https://github.com/isaacost/recipes-app
+
+# Instale as dependências
+$ npm install
+
+# Rode o app
+$ npm start
+
